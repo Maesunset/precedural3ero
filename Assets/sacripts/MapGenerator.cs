@@ -41,66 +41,67 @@ public class MapGenerator : MonoBehaviour
         createMap();
     }
 
-    public void createMap()
-    {
-        vertexPositions.Clear();
-        Queue<Vertex> queue = new Queue<Vertex>();
-        Dictionary<Vertex, int> depthMap = new Dictionary<Vertex, int>();
-
-        Vertex root = roomList[0];
-        vertexPositions[root] = Vector3.zero;
-        depthMap[root] = 0;
-        queue.Enqueue(root);
-
-        bool alternateAxis = true; // alterna entre X y Z para evitar diagonales
-
-        while (queue.Count > 0)
-        {
-            Vertex current = queue.Dequeue();
-            Vector3 parentPos = vertexPositions[current];
-            int depth = depthMap[current];
-
-            for (int i = 0; i < current.Edges.Count; i++)
-            {
-                Vertex child = current.Edges[i];
-                float offset = (i + 1) * (roomSize + hallLength);
-
-                Vector3 childPos;
-                if (alternateAxis)
-                {
-                    childPos = parentPos + new Vector3(offset, 0, 0); // horizontal
-                }
-                else
-                {
-                    childPos = parentPos + new Vector3(0, 0, offset); // vertical
-                }
-
-                vertexPositions[child] = childPos;
-                depthMap[child] = depth + 1;
-                queue.Enqueue(child);
-                alternateAxis = !alternateAxis; // cambia el eje para el siguiente hijo
-            }
-        }
-
-        foreach (var room in roomList)
-        {
-            Instantiate(roomPrefab[0], vertexPositions[room], Quaternion.identity);
-        }
-
-        foreach (var room in roomList)
-        {
-            if (room.ParentVertex != null)
-            {
-                Vector3 start = vertexPositions[room.ParentVertex];
-                Vector3 end = vertexPositions[room];
-                Vector3 direction = end - start;
-                Vector3 midPoint = start + direction / 2f;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-
-                Instantiate(hallPrefab[0], midPoint, rotation);
-            }
-        }
-    }
+   public void createMap()
+   {
+       vertexPositions.Clear();
+       Queue<Vertex> queue = new Queue<Vertex>();
+       HashSet<Vector3> usedPositions = new HashSet<Vector3>();
+   
+       Vertex root = roomList[0];
+       vertexPositions[root] = Vector3.zero;
+       usedPositions.Add(Vector3.zero);
+       queue.Enqueue(root);
+   
+       while (queue.Count > 0)
+       {
+           Vertex current = queue.Dequeue();
+           Vector3 parentPos = vertexPositions[current];
+   
+           // Alternamos direcciones cardinales para hijos: +X, -X, +Z, -Z
+           Vector3[] directions = new Vector3[]
+           {
+               new Vector3(roomSize + hallLength, 0, 0),
+               new Vector3(-(roomSize + hallLength), 0, 0),
+               new Vector3(0, 0, roomSize + hallLength),
+               new Vector3(0, 0, -(roomSize + hallLength))
+           };
+   
+           int dirIndex = 0;
+           foreach (var child in current.Edges)
+           {
+               Vector3 candidatePos;
+               do
+               {
+                   candidatePos = parentPos + directions[dirIndex % directions.Length];
+                   dirIndex++;
+               }
+               while (usedPositions.Contains(candidatePos) && dirIndex < directions.Length * 2);
+   
+               vertexPositions[child] = candidatePos;
+               usedPositions.Add(candidatePos);
+               queue.Enqueue(child);
+           }
+       }
+   
+       foreach (var room in roomList)
+       {
+           Instantiate(roomPrefab[0], vertexPositions[room], Quaternion.identity);
+       }
+   
+       foreach (var room in roomList)
+       {
+           if (room.ParentVertex != null)
+           {
+               Vector3 start = vertexPositions[room.ParentVertex];
+               Vector3 end = vertexPositions[room];
+               Vector3 direction = end - start;
+               Vector3 midPoint = start + direction / 2f;
+               Quaternion rotation = Quaternion.LookRotation(direction);
+   
+               Instantiate(hallPrefab[0], midPoint, rotation);
+           }
+       }
+   }
 
 
 }
