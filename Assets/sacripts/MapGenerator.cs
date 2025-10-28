@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    // cantidad maxima de cuartos a crear
     public int maxRooms = 5;
+    // cantidad maxima de hijos a crear por vertice
     public int maxChilds = 2;
     public float roomSize = 10;
     public int hallLength = 10;
@@ -14,6 +16,7 @@ public class MapGenerator : MonoBehaviour
     private void Start()
     {
         createVertexMap();
+        if (maxChilds > 3) { maxChilds = 3; }
     }
     private void createVertexMap()
     {
@@ -102,6 +105,4 @@ public class MapGenerator : MonoBehaviour
            }
        }
    }
-
-
 }

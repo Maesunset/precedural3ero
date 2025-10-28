@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSpawner
   maxRooms: 20
-  maxChilds: 2
+  maxChilds: 3
   roomSize: 10
   hallLength: 10
   roomPrefab:
