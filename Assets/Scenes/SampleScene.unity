@@ -476,8 +476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d5a97c64ab78a4790afa12f660b5c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSpawner
-  maxRooms: 5
-  MaxChilds: 3
+  maxRooms: 20
+  maxChilds: 2
   roomSize: 10
   hallLength: 10
   roomPrefab:
