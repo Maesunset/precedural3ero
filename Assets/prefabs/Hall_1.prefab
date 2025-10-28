@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1057940659167615854}
   - component: {fileID: 6723653520209042911}
   m_Layer: 0
-  m_Name: corridor_1
+  m_Name: Hall_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

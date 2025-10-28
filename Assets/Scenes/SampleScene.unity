@@ -476,10 +476,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55d5a97c64ab78a4790afa12f660b5c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSpawner
-  RoomsAcount: 5
-  MaxChilds: 2
-  roomPrefab: []
-  CorridorsPrefab: []
+  maxRooms: 5
+  MaxChilds: 3
+  roomSize: 10
+  hallLength: 10
+  roomPrefab:
+  - {fileID: 4948879434938894353, guid: 4bf8760fc8b03fe40b295736d9f96e16, type: 3}
+  hallPrefab:
+  - {fileID: 4205114647350784772, guid: 645e26e7b4f87554dae72a47a37932c7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
