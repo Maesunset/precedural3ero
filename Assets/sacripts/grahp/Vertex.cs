@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
+
 public class Vertex
 {
         // nombre del vertice
-        public string name {get; set;}
+        public string Name {get; set;}
         // valor del vertice actual
         public int Valeu {get; set;} 
         // lista de aristas conectadas
@@ -13,8 +15,8 @@ public class Vertex
         public  Vertex(int newValeu = 0, string newName = "null Node", Vertex newParent = null) 
         {
                 this.Valeu = newValeu;
-                name = newName;
+                this.Name = newName;
+                this.ParentVertex = newParent;
                 Edges = new List<Vertex>();
-                ParentVertex = newParent;
         }
 }

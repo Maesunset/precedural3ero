@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 public class MapGenerator : MonoBehaviour
 {
@@ -13,7 +10,6 @@ public class MapGenerator : MonoBehaviour
     public List<GameObject> roomPrefab;
     public List<GameObject> hallPrefab;
     private List<Vertex> roomList = new List<Vertex>();
-    
     private Dictionary<Vertex, Vector3> vertexPositions = new Dictionary<Vertex, Vector3>();
     private void Start()
     {
@@ -41,17 +37,23 @@ public class MapGenerator : MonoBehaviour
                 roomList[i].Edges = tempList;
             }
             if (roomList.Count >= maxRooms) { break; }
-        }
-        Debug.Log(" all register");
+        }   
         createMap();
     }
 
     public void createMap()
     {
-        Debug.Log("create map");
-        foreach (var Vertex in roomList)
+        vertexPositions.Clear();
+         float distanceBetweenRooms = hallLength + roomSize/2;
+        vertexPositions.Add(roomList[0],new Vector3());
+        for (int i = 1; i < roomList.Count; i++)
         {
-            
+            vertexPositions.Add(roomList[i],new Vector3(0,0,distanceBetweenRooms));
+        }
+
+        foreach (var rooms in roomList)
+        {
+            Instantiate(roomPrefab[0],vertexPositions[rooms],Quaternion.identity);
         }
     }
 }
